@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+   <meta charset="UTF-8">
+
+        🎙
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>    ELFA'S Audio Generator Pro</title>
+   <!-- Tailwind CSS -->
+   <script src="https://cdn.tailwindcss.com"></script>
+   <script>
+      tailwind.config = {
+         darkMode: 'class',
+         theme: {
+            extend: {
+              colors: {
+                 darkBg: '#0b0f19',
+                 cardBg: '#131c2e',
+                 cardBorder: '#1e293b',
+                 accentViolet: '#8b5cf6',
+                 accentCyan: '#06b6d4',
+                 accentGold: '#f59e0b',
+              }
+            }
+         }
+      }
+   </script>
+   <!-- Font Inter & Font Awesome Icons -->
+   <link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=s
+wap" rel="stylesheet">
+   <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <style>
+      body { font-family: 'Inter', sans-serif; background-color: #0b0f19; color: #f1f5f9; }
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: #0b0f19; }
+      ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #475569; }
+      .glass-panel { background: rgba(19, 28, 46, 0.75); backdrop-filter: blur(12px); border:
+1px solid rgba(255, 255, 255, 0.08); }
+      .glow-violet { box-shadow: 0 0 25px -5px rgba(139, 92, 246, 0.3); }
+      .glow-cyan { box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.3); }
+      @keyframes pulseGlow {
+         0%, 100% { opacity: 0.6; }
+         50% { opacity: 1; }
+      }
+      .animate-glow { animation: pulseGlow 2s infinite ease-in-out; }
+   </style>
+
+</head>
+<body class="min-h-screen flex flex-col bg-darkBg text-slate-100 selection:bg-violet-500
+selection:text-white">
+
+   <header class="sticky top-0 z-50 glass-panel border-b border-cardBorder px-4 lg:px-8
+py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-violet-600 to-cyan-500 flex
+items-center justify-center glow-violet shadow-lg">
+            <i class="fa-solid fa-microphone-lines text-white text-lg"></i>
+         </div>
+         <div>
+            <h1 class="font-bold text-lg lg:text-xl bg-gradient-to-r from-white via-slate-200
+to-violet-400 bg-clip-text text-transparent">ELFA'S Audio Generator Pro</h1>
+            <p class="text-xs text-slate-400 hidden sm:block">Studio AI Profesional untuk
+Kualitas Suara Terbaik</p>
+         </div>
+      </div>
+      <div class="flex items-center space-x-3">
+         <div class="hidden sm:flex items-center space-x-2 bg-slate-900/80 px-3 py-1.5
+rounded-full border border-cardBorder text-xs">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-slate-300 font-medium">Status Sistem: <strong
+class="text-emerald-400">Online</strong></span>
+         </div>
+         <button onclick="openModal('bantuanModal')" class="flex items-center space-x-1.5
+bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg text-xs font-medium
+transition border border-cardBorder">
+            <i class="fa-regular fa-circle-question text-cyan-400"></i>
+            <span class="hidden md:inline">Bantuan</span>
+         </button>
+         <button onclick="openModal('profileModal')" class="w-9 h-9 rounded-full
+bg-gradient-to-r from-violet-500 to-cyan-500 flex items-center justify-center font-bold text-sm
+shadow-md hover:opacity-95 transition">
+            <span>EF</span>
+         </button>
+         <button onclick="toggleMobileMenu()" class="lg:hidden p-2 text-slate-300
+hover:text-white focus:outline-none">
+            <i class="fa-solid fa-bars text-xl" id="mobileMenuIcon"></i>
+         </button>
+      </div>
+   </header>
+
+  <div class="flex-1 flex flex-col lg:flex-row max-w-[1600px] w-full mx-auto p-3 lg:p-6
+gap-6">
+
+     <!-- Sidebar Navigation (Desktop & Mobile Drawer) -->
+
+      <aside id="sidebarNav" class="w-full lg:w-64 glass-panel rounded-2xl p-4 flex flex-col
+space-y-6 hidden lg:flex shrink-0">
+         <div>
+           <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400
+px-3">Menu Utama</span>
+           <nav class="mt-2 space-y-1">
+              <a href="#sumberSuara" onclick="scrollToSection('sumberSuara')" class="flex
+items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium bg-violet-600/20
+text-violet-300 border border-violet-500/30 transition">
+                <i class="fa-solid fa-house w-5 text-center text-violet-400"></i>
+                <span>Beranda</span>
+              </a>
+           </nav>
+         </div>
+         <div>
+           <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400
+px-3">Pengaturan Suara</span>
+           <nav class="mt-2 space-y-1">
+              <a href="#sumberSuara" onclick="scrollToSection('sumberSuara')" class="flex
+items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300
+hover:bg-slate-800/60 hover:text-white transition">
+                <i class="fa-solid fa-microphone w-5 text-center text-cyan-400"></i>
+                <span>Sumber Suara</span>
+              </a>
+              <a href="#mesinModel" onclick="scrollToSection('mesinModel')" class="flex
+items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300
+hover:bg-slate-800/60 hover:text-white transition">
+                <i class="fa-solid fa-microchip w-5 text-center text-violet-400"></i>
+                <span>Mesin Model AI</span>
+              </a>
+              <a href="#gayaSuara" onclick="scrollToSection('gayaSuara')" class="flex
+items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300
+hover:bg-slate-800/60 hover:text-white transition">
+                <i class="fa-solid fa-sliders w-5 text-center text-amber-400"></i>
+                <span>Gaya Suara</span>
+              </a>
+              <a href="#skenarioPenggunaan"
+onclick="scrollToSection('skenarioPenggunaan')" class="flex items-center space-x-3 px-3
+py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800/60 hover:text-white
+transition">
+                <i class="fa-solid fa-clapperboard w-5 text-center text-emerald-400"></i>
+                <span>Skenario Penggunaan</span>
+              </a>
+           </nav>
+         </div>
+         <div>
+           <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400
+px-3">Proses & Hasil</span>
+
+           <nav class="mt-2 space-y-1">
+              <a href="#konfirmasiPanel" onclick="scrollToSection('konfirmasiPanel')"
+class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium
+text-slate-300 hover:bg-slate-800/60 hover:text-white transition">
+                 <i class="fa-solid fa-shield-check w-5 text-center text-cyan-400"></i>
+                 <span>Konfirmasi & Pemrosesan</span>
+              </a>
+              <a href="#scriptEditor" onclick="scrollToSection('scriptEditor')" class="flex
+items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300
+hover:bg-slate-800/60 hover:text-white transition">
+                 <i class="fa-solid fa-pen-nib w-5 text-center text-violet-400"></i>
+                 <span>Teks (Script)</span>
+              </a>
+              <a href="#hasilKonversi" onclick="scrollToSection('hasilKonversi')" class="flex
+items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300
+hover:bg-slate-800/60 hover:text-white transition">
+                 <i class="fa-solid fa-headphones w-5 text-center text-emerald-400"></i>
+                 <span>Hasil Konversi</span>
+              </a>
+           </nav>
+        </div>
+        <div class="mt-auto pt-4 border-t border-cardBorder">
+           <div class="p-3 rounded-xl bg-gradient-to-br from-violet-900/40 to-cyan-900/40
+border border-violet-500/20 text-center">
+              <i class="fa-solid fa-wand-magic-sparkles text-violet-400 text-xl mb-2"></i>
+              <p class="text-xs font-medium text-slate-200">Studio AI Profesional untuk
+kualitas suara terbaik dalam setiap proyek Anda.</p>
+              <button onclick="openModal('aiStudioModal')" class="mt-3 w-full bg-violet-600
+hover:bg-violet-500 text-white text-xs font-semibold py-2 rounded-lg transition shadow-lg">
+                 <i class="fa-solid fa-bolt mr-1"></i> AI Powered Studio
+              </button>
+           </div>
+        </div>
+      </aside>
+
+     <!-- Main Content Area -->
+     <main class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+       <!-- Left Column: Source, AI Engine, Style & Scenario -->
+       <div class="space-y-6">
+
+         <!-- 1. SUMBER SUARA -->
+         <section id="sumberSuara" class="glass-panel rounded-2xl p-5 border
+border-cardBorder space-y-5">
+            <div class="flex items-center justify-between border-b border-cardBorder pb-3">
+               <div class="flex items-center space-x-2">
+                   <span class="w-7 h-7 rounded-lg bg-violet-600/30 text-violet-400 flex
+items-center justify-center font-bold text-sm">1</span>
+
+                 <h2 class="text-base font-bold text-white tracking-wide">SUMBER
+SUARA</h2>
+               </div>
+               <span class="text-xs text-violet-400 bg-violet-950/60 px-2.5 py-1 rounded-full
+border border-violet-500/30">Modul 1</span>
+            </div>
+
+            <!-- A. Karakter Suara -->
+            <div class="space-y-2">
+               <label class="block text-xs font-semibold text-slate-300 uppercase
+tracking-wider">A. Karakter Suara - Prompt Karakter Suara</label>
+               <div class="relative">
+                  <textarea id="voicePromptInput" rows="3" maxlength="500"
+oninput="updateCharCount('voicePromptInput', 'promptCharCount', 500)" class="w-full
+bg-slate-900/90 border border-cardBorder rounded-xl p-3 text-sm text-slate-100
+placeholder-slate-500 focus:outline-none focus:border-violet-500 transition resize-none"
+placeholder="Contoh: Suara pria dewasa yang hangat, dalam, berwibawa, artikulasi jelas,
+dan cocok untuk narasi profesional."></textarea>
+                  <div class="absolute bottom-2 right-3 text-[10px] text-slate-500"
+id="promptCharCount">0 / 500</div>
+               </div>
+            </div>
+
+            <!-- B. Kloning Suara -->
+            <div class="space-y-3 pt-2 border-t border-cardBorder">
+               <label class="block text-xs font-semibold text-slate-300 uppercase
+tracking-wider">B. Kloning Suara & Referensi Audio</label>
+               <div class="grid grid-cols-2 gap-3">
+                  <button type="button" id="tabRecordBtn"
+onclick="switchCloneTab('record')" class="flex items-center justify-center space-x-2 py-2.5
+px-4 rounded-xl text-xs font-semibold transition bg-violet-600 text-white shadow-md">
+                    <i class="fa-solid fa-microphone-lines"></i>
+                    <span>Rekam Suara</span>
+                  </button>
+                  <button type="button" id="tabUploadBtn"
+onclick="switchCloneTab('upload')" class="flex items-center justify-center space-x-2 py-2.5
+px-4 rounded-xl text-xs font-semibold transition bg-slate-800 text-slate-300
+hover:bg-slate-700 border border-cardBorder">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Unggah Audio</span>
+                  </button>
+               </div>
+
+              <!-- Record Tab View -->
+              <div id="recordSection" class="p-4 bg-slate-900/60 rounded-xl border
+border-cardBorder space-y-4">
+                 <div class="flex items-center justify-between">
+
+                     <span class="text-xs font-medium text-slate-400"
+id="recordStatusLabel">Status: Siap Merekam</span>
+                     <span class="text-xs font-mono text-cyan-400 font-semibold"
+id="recordTimer">00:00 / 00:30</span>
+                  </div>
+                  <!-- Visual Waveform Simulator -->
+                  <div class="flex items-center justify-center space-x-1 h-12 bg-slate-950/80
+rounded-lg p-2" id="waveformContainer">
+                     <div class="w-1 bg-cyan-500 h-3 rounded-full animate-pulse"></div>
+                     <div class="w-1 bg-cyan-400 h-6 rounded-full animate-pulse"
+style="animation-delay: 0.1s"></div>
+                     <div class="w-1 bg-violet-500 h-9 rounded-full animate-pulse"
+style="animation-delay: 0.2s"></div>
+                     <div class="w-1 bg-violet-400 h-5 rounded-full animate-pulse"
+style="animation-delay: 0.3s"></div>
+                     <div class="w-1 bg-cyan-500 h-10 rounded-full animate-pulse"
+style="animation-delay: 0.4s"></div>
+                     <div class="w-1 bg-cyan-400 h-7 rounded-full animate-pulse"
+style="animation-delay: 0.15s"></div>
+                     <div class="w-1 bg-violet-500 h-4 rounded-full animate-pulse"
+style="animation-delay: 0.25s"></div>
+                     <div class="w-1 bg-violet-400 h-8 rounded-full animate-pulse"
+style="animation-delay: 0.35s"></div>
+                     <div class="w-1 bg-cyan-500 h-6 rounded-full animate-pulse"
+style="animation-delay: 0.05s"></div>
+                     <div class="w-1 bg-cyan-400 h-3 rounded-full animate-pulse"
+style="animation-delay: 0.45s"></div>
+                  </div>
+                  <div class="flex items-center justify-center space-x-3">
+                     <button type="button" onclick="toggleRecording()" id="recordMainBtn"
+class="flex items-center space-x-1.5 bg-violet-600 hover:bg-violet-500 text-white px-4 py-2
+rounded-lg text-xs font-medium transition shadow">
+                        <i class="fa-solid fa-microphone" id="recordIcon"></i>
+                        <span id="recordBtnText">Mulai Rekam</span>
+                     </button>
+                     <button type="button" onclick="playRecording()" id="playRecordBtn"
+disabled class="flex items-center space-x-1.5 bg-slate-800 text-slate-500 px-3 py-2
+rounded-lg text-xs font-medium transition border border-cardBorder cursor-not-allowed">
+                        <i class="fa-solid fa-play"></i>
+                        <span>Putar</span>
+                     </button>
+                     <button type="button" onclick="deleteRecording()" id="deleteRecordBtn"
+disabled class="flex items-center space-x-1.5 bg-slate-800 text-slate-500 px-3 py-2
+rounded-lg text-xs font-medium transition border border-cardBorder cursor-not-allowed">
+                        <i class="fa-solid fa-trash"></i>
+                        <span>Hapus</span>
+                     </button>
+                  </div>
+
+               </div>
+
+                 <!-- Upload Tab View (Hidden by default) -->
+                 <div id="uploadSection" class="hidden p-4 bg-slate-900/60 rounded-xl border
+border-cardBorder space-y-3">
+                    <div class="border-2 border-dashed border-slate-700
+hover:border-violet-500 rounded-xl p-6 text-center cursor-pointer transition bg-slate-950/40"
+onclick="document.getElementById('audioFileInput').click()">
+                       <i class="fa-solid fa-cloud-arrow-up text-3xl text-violet-400 mb-2"></i>
+                       <p class="text-xs text-slate-300 font-medium">Seret & letakkan file
+audio di sini, atau <span class="text-violet-400 underline">Pilih Berkas Audio</span></p>
+                       <p class="text-[10px] text-slate-500 mt-1">Mendukung WAV, MP3, M4A,
+WebM (Maks. 25MB)</p>
+                       <input type="file" id="audioFileInput" accept="audio/*" class="hidden"
+onchange="handleAudioUpload(event)">
+                    </div>
+                    <div id="uploadedFileInfo" class="hidden flex items-center justify-between
+p-2.5 bg-slate-800/80 rounded-lg text-xs border border-cardBorder">
+                       <div class="flex items-center space-x-2 truncate">
+                          <i class="fa-solid fa-file-audio text-cyan-400"></i>
+                          <span id="uploadFileName" class="truncate font-medium
+text-slate-200">audio_sample.mp3</span>
+                          <span id="uploadFileSize" class="text-slate-400 text-[10px]"></span>
+                       </div>
+                       <button onclick="removeUploadedFile()" class="text-rose-400
+hover:text-rose-300 p-1"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                 </div>
+
+               <p class="text-[11px] text-slate-400 italic">Catatan: Kloning suara
+memerlukan izin dan audio referensi yang dimiliki sendiri atau telah mendapatkan
+persetujuan.</p>
+            </div>
+
+            <!-- C. Identitas Suara -->
+            <div class="space-y-3 pt-2 border-t border-cardBorder">
+               <label class="block text-xs font-semibold text-slate-300 uppercase
+tracking-wider">C. Identitas Suara</label>
+
+               <div class="space-y-1.5">
+                  <span class="text-xs text-slate-400">Jenis Kelamin</span>
+                  <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="setGender('Pria')" id="genderPria"
+class="py-2 px-3 rounded-xl text-xs font-semibold transition bg-violet-600 text-white border
+border-violet-500 shadow">Pria</button>
+                    <button type="button" onclick="setGender('Wanita')" id="genderWanita"
+class="py-2 px-3 rounded-xl text-xs font-semibold transition bg-slate-800 text-slate-300
+border border-cardBorder hover:bg-slate-700">Wanita</button>
+
+                 </div>
+               </div>
+
+                <div class="space-y-1.5">
+                  <span class="text-xs text-slate-400">Kelompok Usia</span>
+                  <div class="grid grid-cols-3 gap-2">
+                     <button type="button" onclick="setAgeGroup('Muda')" id="ageMuda"
+class="py-2 px-2 rounded-xl text-xs font-semibold transition bg-slate-800 text-slate-300
+border border-cardBorder hover:bg-slate-700">Muda</button>
+                     <button type="button" onclick="setAgeGroup('Pertengahan')"
+id="agePertengahan" class="py-2 px-2 rounded-xl text-xs font-semibold transition
+bg-violet-600 text-white border border-violet-500 shadow">Pertengahan</button>
+                     <button type="button" onclick="setAgeGroup('Tua')" id="ageTua"
+class="py-2 px-2 rounded-xl text-xs font-semibold transition bg-slate-800 text-slate-300
+border border-cardBorder hover:bg-slate-700">Tua</button>
+                  </div>
+                </div>
+
+                <div class="space-y-1.5">
+                   <label class="text-xs text-slate-400" for="characterNameInput">Nama
+Karakter</label>
+                   <input type="text" id="characterNameInput" value="Narator Pro"
+oninput="updateConfigSummary()" class="w-full bg-slate-900/90 border border-cardBorder
+rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-violet-500
+transition" placeholder="Masukkan nama karakter Anda">
+                </div>
+              </div>
+
+               <!-- D. Uji Suara -->
+               <div class="space-y-2 pt-2 border-t border-cardBorder">
+                  <label class="block text-xs font-semibold text-slate-300 uppercase
+tracking-wider">D. Uji Suara</label>
+                  <p class="text-[11px] text-slate-400">Dengarkan preview suara dengan
+kalimat uji berikut:</p>
+                  <div class="p-3 bg-slate-900/80 rounded-xl border border-cardBorder text-xs
+italic text-violet-300 font-mono" id="testSentenceDisplay">
+                     "Hallo, saya adalah suara tiruan Narator Pro, selamat mencoba aplikasi
+ini."
+                  </div>
+                  <button type="button" onclick="runVoiceTest()" id="testVoiceBtn" class="w-full
+bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-500 hover:to-cyan-500
+text-white font-semibold py-2.5 px-4 rounded-xl text-xs transition shadow-md flex
+items-center justify-center space-x-2">
+                     <i class="fa-solid fa-play" id="testVoiceIcon"></i>
+                     <span id="testVoiceBtnText">Uji Suara</span>
+                  </button>
+               </div>
+            </section>
+
+         <!-- 2. MESIN MODEL AI -->
+         <section id="mesinModel" class="glass-panel rounded-2xl p-5 border
+border-cardBorder space-y-4">
+            <div class="flex items-center justify-between border-b border-cardBorder pb-3">
+               <div class="flex items-center space-x-2">
+                   <span class="w-7 h-7 rounded-lg bg-cyan-600/30 text-cyan-400 flex
+items-center justify-center font-bold text-sm">2</span>
+                   <h2 class="text-base font-bold text-white tracking-wide">MESIN MODEL
+AI</h2>
+               </div>
+               <span class="text-xs text-cyan-400 bg-cyan-950/60 px-2.5 py-1 rounded-full
+border border-cyan-500/30">Modul 2</span>
+            </div>
+
+               <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="engineGrid">
+                 <div onclick="selectEngine('Akool')" id="engineAkool" class="engine-card
+cursor-pointer p-3 rounded-xl border border-cardBorder bg-slate-900/60
+hover:border-violet-500/60 flex flex-col items-center text-center space-y-2 transition">
+                    <div class="w-10 h-10 rounded-lg bg-violet-600/20 text-violet-400 flex
+items-center justify-center font-bold text-base"><i class="fa-solid fa-robot"></i></div>
+                    <span class="text-xs font-semibold text-slate-200">Akool</span>
+                 </div>
+                 <div onclick="selectEngine('Cartesia')" id="engineCartesia"
+class="engine-card cursor-pointer p-3 rounded-xl border-2 border-violet-500 bg-violet-950/20
+flex flex-col items-center text-center space-y-2 transition relative">
+                    <div class="absolute top-2 right-2 w-4 h-4 rounded-full bg-violet-500
+text-white flex items-center justify-center text-[10px]"><i class="fa-solid fa-check"></i></div>
+                    <div class="w-10 h-10 rounded-lg bg-cyan-600/20 text-cyan-400 flex
+items-center justify-center font-bold text-base"><i class="fa-solid fa-wave-square"></i></div>
+                    <span class="text-xs font-semibold text-slate-200">Cartesia</span>
+                 </div>
+                 <div onclick="selectEngine('ElevenLabs')" id="engineElevenLabs"
+class="engine-card cursor-pointer p-3 rounded-xl border border-cardBorder bg-slate-900/60
+hover:border-violet-500/60 flex flex-col items-center text-center space-y-2 transition">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-600/20 text-emerald-400 flex
+items-center justify-center font-bold text-base"><i class="fa-solid fa-volume-high"></i></div>
+                    <span class="text-xs font-semibold text-slate-200">ElevenLabs</span>
+                 </div>
+                 <div onclick="selectEngine('Hailuo')" id="engineHailuo" class="engine-card
+cursor-pointer p-3 rounded-xl border border-cardBorder bg-slate-900/60
+hover:border-violet-500/60 flex flex-col items-center text-center space-y-2 transition">
+                    <div class="w-10 h-10 rounded-lg bg-amber-600/20 text-amber-400 flex
+items-center justify-center font-bold text-base"><i class="fa-solid fa-bolt"></i></div>
+                    <span class="text-xs font-semibold text-slate-200">Hailuo</span>
+                 </div>
+
+               <div onclick="selectEngine('Google Studio')" id="engineGoogleStudio"
+class="engine-card cursor-pointer p-3 rounded-xl border border-cardBorder bg-slate-900/60
+hover:border-violet-500/60 flex flex-col items-center text-center space-y-2 transition">
+                   <div class="w-10 h-10 rounded-lg bg-blue-600/20 text-blue-400 flex
+items-center justify-center font-bold text-base"><i class="fa-solid fa-brain"></i></div>
+                   <span class="text-xs font-semibold text-slate-200">Google Studio</span>
+               </div>
+            </div>
+            <p class="text-[11px] text-slate-400">Pilih satu mesin AI untuk menghasilkan
+suara berkualitas terbaik.</p>
+         </section>
+
+         <!-- 3. GAYA SUARA -->
+         <section id="gayaSuara" class="glass-panel rounded-2xl p-5 border
+border-cardBorder space-y-4">
+             <div class="flex items-center justify-between border-b border-cardBorder pb-3">
+               <div class="flex items-center space-x-2">
+                   <span class="w-7 h-7 rounded-lg bg-amber-600/30 text-amber-400 flex
+items-center justify-center font-bold text-sm">3</span>
+                   <h2 class="text-base font-bold text-white tracking-wide">GAYA SUARA
+<span class="text-xs font-normal text-slate-400">(Pilih lebih dari 1)</span></h2>
+               </div>
+               <span class="text-xs text-amber-400 bg-amber-950/60 px-2.5 py-1
+rounded-full border border-amber-500/30">Modul 3</span>
+             </div>
+
+             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="stylesGrid">
+                <button type="button" onclick="toggleStyle('Berwibawa')"
+id="styleBerwibawa" class="style-chip p-2.5 rounded-xl border border-cardBorder
+bg-slate-900/60 hover:border-amber-500/50 flex items-center space-x-2 text-left transition">
+                   <span class="text-amber-400 text-sm"><i class="fa-solid
+fa-crown"></i></span>
+                   <span class="text-xs font-medium text-slate-200
+truncate">Berwibawa</span>
+                </button>
+                <button type="button" onclick="toggleStyle('Tenang')" id="styleTenang"
+class="style-chip p-2.5 rounded-xl border-2 border-amber-500 bg-amber-950/20 flex
+items-center space-x-2 text-left transition relative">
+                   <div class="absolute top-1.5 right-1.5 w-3.5 h-3.5 rounded-full
+bg-amber-500 text-white flex items-center justify-center text-[8px]"><i class="fa-solid
+fa-check"></i></div>
+                   <span class="text-cyan-400 text-sm"><i class="fa-solid
+fa-spa"></i></span>
+                   <span class="text-xs font-medium text-slate-200 truncate">Tenang</span>
+                </button>
+                <button type="button" onclick="toggleStyle('Percaya Diri')" id="stylePercaya
+Diri" class="style-chip p-2.5 rounded-xl border border-cardBorder bg-slate-900/60
+hover:border-amber-500/50 flex items-center space-x-2 text-left transition">
+
+                   <span class="text-emerald-400 text-sm"><i class="fa-solid
+fa-shield-halved"></i></span>
+                   <span class="text-xs font-medium text-slate-200 truncate">Percaya
+Diri</span>
+                </button>
+                <button type="button" onclick="toggleStyle('Antusias')" id="styleAntusias"
+class="style-chip p-2.5 rounded-xl border border-cardBorder bg-slate-900/60
+hover:border-amber-500/50 flex items-center space-x-2 text-left transition">
+                   <span class="text-amber-400 text-sm"><i class="fa-solid
+fa-star"></i></span>
+                   <span class="text-xs font-medium text-slate-200
+truncate">Antusias</span>
+                </button>
+                <button type="button" onclick="toggleStyle('Bersemangat')"
+id="styleBersemangat" class="style-chip p-2.5 rounded-xl border border-cardBorder
+bg-slate-900/60 hover:border-amber-500/50 flex items-center space-x-2 text-left transition">
+                   <span class="text-rose-400 text-sm"><i class="fa-solid fa-fire"></i></span>
+                   <span class="text-xs font-medium text-slate-200
+truncate">Bersemangat</span>
+                </button>
+                <button type="button" onclick="toggleStyle('Ramah')" id="styleRamah"
+class="style-chip p-2.5 rounded-xl border border-cardBorder bg-slate-900/60
+hover:border-amber-500/50 flex items-center space-x-2 text-left transition">
+                   <span class="text-violet-400 text-sm"><i class="fa-solid
+fa-face-smile"></i></span>
+                   <span class="text-xs font-medium text-slate-200 truncate">Ramah</span>
+                </button>
+                <button type="button" onclick="toggleStyle('Ceria')" id="styleCeria"
+class="style-chip p-2.5 rounded-xl border border-cardBorder bg-slate-900/60
+hover:border-amber-500/50 flex items-center space-x-2 text-left transition">
+                   <span class="text-yellow-400 text-sm"><i class="fa-solid
+fa-sun"></i></span>
+                   <span class="text-xs font-medium text-slate-200 truncate">Ceria</span>
+                </button>
+                <button type="button" onclick="toggleStyle('Keras')" id="styleKeras"
+class="style-chip p-2.5 rounded-xl border border-cardBorder bg-slate-900/60
+hover:border-amber-500/50 flex items-center space-x-2 text-left transition">
+                   <span class="text-orange-400 text-sm"><i class="fa-solid
+fa-volume-high"></i></span>
+                   <span class="text-xs font-medium text-slate-200 truncate">Keras</span>
+                </button>
+             </div>
+           </section>
+
+         <!-- 4. SKENARIO PENGGUNAAN -->
+         <section id="skenarioPenggunaan" class="glass-panel rounded-2xl p-5 border
+border-cardBorder space-y-4">
+            <div class="flex items-center justify-between border-b border-cardBorder pb-3">
+
+               <div class="flex items-center space-x-2">
+                   <span class="w-7 h-7 rounded-lg bg-emerald-600/30 text-emerald-400 flex
+items-center justify-center font-bold text-sm">4</span>
+                   <h2 class="text-base font-bold text-white tracking-wide">SKENARIO
+PENGGUNAAN</h2>
+               </div>
+               <span class="text-xs text-emerald-400 bg-emerald-950/60 px-2.5 py-1
+rounded-full border border-emerald-500/30">Modul 4</span>
+             </div>
+
+            <div class="grid grid-cols-3 gap-2.5" id="scenarioGrid">
+               <div onclick="selectScenario('Iklan')" id="scenarioIklan" class="scenario-card
+cursor-pointer p-3 rounded-xl border border-cardBorder bg-slate-900/60
+hover:border-emerald-500/60 flex flex-col items-center text-center space-y-1.5 transition">
+                  <i class="fa-solid fa-bullhorn text-violet-400 text-lg"></i>
+                  <span class="text-xs font-medium text-slate-200">Iklan</span>
+               </div>
+               <div onclick="selectScenario('Karakter dan Animasi')" id="scenarioKarakter
+dan Animasi" class="scenario-card cursor-pointer p-3 rounded-xl border border-cardBorder
+bg-slate-900/60 hover:border-emerald-500/60 flex flex-col items-center text-center
+space-y-1.5 transition">
+                  <i class="fa-solid fa-masks-theater text-pink-400 text-lg"></i>
+                  <span class="text-xs font-medium text-slate-200">Karakter &
+Animasi</span>
+               </div>
+               <div onclick="selectScenario('Berita')" id="scenarioBerita"
+class="scenario-card cursor-pointer p-3 rounded-xl border-2 border-emerald-500
+bg-emerald-950/20 flex flex-col items-center text-center space-y-1.5 transition relative">
+                  <div class="absolute top-1.5 right-1.5 w-3.5 h-3.5 rounded-full
+bg-emerald-500 text-white flex items-center justify-center text-[8px]"><i class="fa-solid
+fa-check"></i></div>
+                  <i class="fa-solid fa-newspaper text-cyan-400 text-lg"></i>
+                  <span class="text-xs font-medium text-slate-200">Berita</span>
+               </div>
+               <div onclick="selectScenario('Hiburan dan TV')" id="scenarioHiburan dan TV"
+class="scenario-card cursor-pointer p-3 rounded-xl border border-cardBorder
+bg-slate-900/60 hover:border-emerald-500/60 flex flex-col items-center text-center
+space-y-1.5 transition">
+                  <i class="fa-solid fa-tv text-amber-400 text-lg"></i>
+                  <span class="text-xs font-medium text-slate-200">Hiburan & TV</span>
+               </div>
+               <div onclick="selectScenario('Informatif dan Edukatif')" id="scenarioInformatif
+dan Edukatif" class="scenario-card cursor-pointer p-3 rounded-xl border border-cardBorder
+bg-slate-900/60 hover:border-emerald-500/60 flex flex-col items-center text-center
+space-y-1.5 transition">
+                  <i class="fa-solid fa-book-open text-blue-400 text-lg"></i>
+                  <span class="text-xs font-medium text-slate-200">Edukatif</span>
+               </div>
+
+               <div onclick="selectScenario('Dokumenter')" id="scenarioDokumenter"
+class="scenario-card cursor-pointer p-3 rounded-xl border border-cardBorder
+bg-slate-900/60 hover:border-emerald-500/60 flex flex-col items-center text-center
+space-y-1.5 transition">
+                  <i class="fa-solid fa-film text-purple-400 text-lg"></i>
+                  <span class="text-xs font-medium text-slate-200">Dokumenter</span>
+               </div>
+               <div onclick="selectScenario('Naratif')" id="scenarioNaratif"
+class="scenario-card cursor-pointer p-3 rounded-xl border border-cardBorder
+bg-slate-900/60 hover:border-emerald-500/60 flex flex-col items-center text-center
+space-y-1.5 transition">
+                  <i class="fa-solid fa-feather text-rose-400 text-lg"></i>
+                  <span class="text-xs font-medium text-slate-200">Naratif</span>
+               </div>
+               <div onclick="selectScenario('Percakapan')" id="scenarioPercakapan"
+class="scenario-card cursor-pointer p-3 rounded-xl border border-cardBorder
+bg-slate-900/60 hover:border-emerald-500/60 flex flex-col items-center text-center
+space-y-1.5 transition">
+                  <i class="fa-solid fa-comments text-teal-400 text-lg"></i>
+                  <span class="text-xs font-medium text-slate-200">Percakapan</span>
+               </div>
+               <div onclick="selectScenario('Medsos')" id="scenarioMedsos"
+class="scenario-card cursor-pointer p-3 rounded-xl border border-cardBorder
+bg-slate-900/60 hover:border-emerald-500/60 flex flex-col items-center text-center
+space-y-1.5 transition">
+                  <i class="fa-solid fa-heart text-red-400 text-lg"></i>
+                  <span class="text-xs font-medium text-slate-200">Medsos</span>
+               </div>
+            </div>
+            <p class="text-[11px] text-slate-400">Skenario yang dipilih akan mempengaruhi
+gaya penulisan script dan karakter suara.</p>
+          </section>
+
+       </div>
+
+       <!-- Right Column: Confirmation, Script Editor & Audio Output -->
+       <div class="space-y-6">
+
+         <!-- 5. KONFIRMASI DAN PEMROSESAN -->
+         <section id="konfirmasiPanel" class="glass-panel rounded-2xl p-5 border
+border-cardBorder space-y-4">
+            <div class="flex items-center justify-between border-b border-cardBorder pb-3">
+               <div class="flex items-center space-x-2">
+                   <span class="w-7 h-7 rounded-lg bg-indigo-600/30 text-indigo-400 flex
+items-center justify-center font-bold text-sm">5</span>
+                   <h2 class="text-base font-bold text-white tracking-wide">KONFIRMASI
+DAN PEMROSESAN</h2>
+               </div>
+
+               <span class="text-xs text-indigo-400 bg-indigo-950/60 px-2.5 py-1
+rounded-full border border-indigo-500/30">Modul 5</span>
+             </div>
+
+            <div class="space-y-2 text-xs bg-slate-900/80 p-3.5 rounded-xl border
+border-cardBorder">
+              <div class="grid grid-cols-3 gap-1 py-1 border-b border-slate-800">
+                 <span class="text-slate-400">Mesin Model AI</span>
+                 <span class="col-span-2 font-medium text-slate-200" id="sumEngine">:
+Cartesia</span>
+              </div>
+              <div class="grid grid-cols-3 gap-1 py-1 border-b border-slate-800">
+                 <span class="text-slate-400">Sumber Suara</span>
+                 <span class="col-span-2 font-medium text-slate-200" id="sumSource">:
+Prompt Karakter Suara</span>
+              </div>
+              <div class="grid grid-cols-3 gap-1 py-1 border-b border-slate-800">
+                 <span class="text-slate-400">Nama Karakter</span>
+                 <span class="col-span-2 font-medium text-slate-200"
+id="sumCharName">: Narator Pro</span>
+              </div>
+              <div class="grid grid-cols-3 gap-1 py-1 border-b border-slate-800">
+                 <span class="text-slate-400">Kelamin / Usia</span>
+                 <span class="col-span-2 font-medium text-slate-200"
+id="sumGenderAge">: Pria / Pertengahan</span>
+              </div>
+              <div class="grid grid-cols-3 gap-1 py-1 border-b border-slate-800">
+                 <span class="text-slate-400">Gaya Suara</span>
+                 <span class="col-span-2 font-medium text-slate-200 truncate"
+id="sumStyles">: Tenang</span>
+              </div>
+              <div class="grid grid-cols-3 gap-1 py-1 border-b border-slate-800">
+                 <span class="text-slate-400">Skenario</span>
+                 <span class="col-span-2 font-medium text-slate-200" id="sumScenario">:
+Berita</span>
+              </div>
+              <div class="grid grid-cols-3 gap-1 py-1">
+                 <span class="text-slate-400">Status Sumber</span>
+                 <span class="col-span-2 font-medium text-emerald-400"
+id="sumStatus">Siap Digunakan</span>
+              </div>
+            </div>
+
+            <div class="flex flex-col items-center justify-center p-3 bg-gradient-to-b
+from-indigo-950/20 to-slate-950/50 rounded-xl border border-indigo-500/20 text-center
+space-y-2">
+               <div class="w-10 h-10 rounded-full bg-indigo-500/20 text-indigo-400 flex
+items-center justify-center text-lg"><i class="fa-solid fa-shield-halved"></i></div>
+
+                <p class="text-[11px] text-slate-300">Periksa kembali pengaturan Anda
+sebelum melanjutkan ke proses pembuatan audio.</p>
+                <button type="button" onclick="confirmSettings()" id="confirmBtn"
+class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 px-4
+rounded-xl text-xs transition shadow-lg flex items-center justify-center space-x-2">
+                   <i class="fa-solid fa-check"></i>
+                   <span>✓ Konfirmasi Pengaturan</span>
+                </button>
+             </div>
+          </section>
+
+         <!-- 6. TEKS YANG AKAN DIUBAH MENJADI SUARA (SCRIPT EDITOR) -->
+         <section id="scriptEditor" class="glass-panel rounded-2xl p-5 border
+border-cardBorder space-y-4">
+            <div class="flex items-center justify-between border-b border-cardBorder pb-3">
+               <div class="flex items-center space-x-2">
+                   <span class="w-7 h-7 rounded-lg bg-violet-600/30 text-violet-400 flex
+items-center justify-center font-bold text-sm">6</span>
+                   <h2 class="text-base font-bold text-white tracking-wide">TEKS YANG
+AKAN DIUBAH MENJADI SUARA</h2>
+               </div>
+               <span class="text-xs text-violet-400 bg-violet-950/60 px-2.5 py-1 rounded-full
+border border-violet-500/30">Modul 6</span>
+            </div>
+
+               <!-- Editor Toolbar -->
+               <div class="flex flex-wrap items-center justify-between gap-2 pb-1">
+                  <div class="flex items-center space-x-1">
+                     <button type="button" onclick="formatText('bold')" title="Tebal" class="p-1.5
+bg-slate-800 hover:bg-slate-700 rounded text-slate-300 text-xs w-7 h-7 flex items-center
+justify-center border border-cardBorder"><i class="fa-solid fa-bold"></i></button>
+                     <button type="button" onclick="formatText('italic')" title="Miring"
+class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded text-slate-300 text-xs w-7 h-7 flex
+items-center justify-center border border-cardBorder"><i class="fa-solid
+fa-italic"></i></button>
+                     <button type="button" onclick="formatText('underline')" title="Garis Bawah"
+class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded text-slate-300 text-xs w-7 h-7 flex
+items-center justify-center border border-cardBorder"><i class="fa-solid
+fa-underline"></i></button>
+                     <button type="button" onclick="insertPause()" title="Sisipkan Jeda [Pause]"
+class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded text-slate-300 text-xs px-2 flex
+items-center justify-center border border-cardBorder space-x-1"><i class="fa-solid
+fa-pause"></i><span>Jeda</span></button>
+                  </div>
+                  <button type="button" onclick="openModal('tipsModal')" class="text-xs
+text-cyan-400 hover:text-cyan-300 flex items-center space-x-1"><i class="fa-regular
+fa-lightbulb"></i><span>Tips Penulisan</span></button>
+               </div>
+
+             <div class="relative">
+                <textarea id="scriptTextInput" rows="5" oninput="updateScriptStats()"
+class="w-full bg-slate-900/90 border border-cardBorder rounded-xl p-3.5 text-sm
+text-slate-100 placeholder-slate-500 focus:outline-none focus:border-violet-500 transition
+leading-relaxed" placeholder="Tulis atau tempelkan naskah Anda di sini...">Selamat datang
+di ELFA'S Audio Generator Pro. Studio kecerdasan buatan terbaik untuk memproduksi sulih
+suara profesional berkualitas tinggi dalam bahasa Indonesia.</textarea>
+             </div>
+
+             <div class="flex items-center justify-between text-xs text-slate-400">
+               <div class="flex items-center space-x-3">
+                  <span><i class="fa-solid fa-font text-violet-400 mr-1"></i> <strong
+id="charCount" class="text-slate-200">142</strong> karakter</span>
+                  <span><i class="fa-solid fa-align-left text-cyan-400 mr-1"></i> <strong
+id="wordCount" class="text-slate-200">22</strong> kata</span>
+               </div>
+               <button type="button" onclick="clearScript()" class="text-rose-400
+hover:text-rose-300 font-medium">Hapus Teks</button>
+             </div>
+
+             <button type="button" onclick="improveScriptAI()" id="improveScriptBtn"
+class="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500
+hover:to-indigo-500 text-white font-semibold py-2.5 px-4 rounded-xl text-xs transition
+shadow-md flex items-center justify-center space-x-2">
+
+                      ✨
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+                <span>      Perbaiki Script (Sesuai skenario & gaya)</span>
+             </button>
+
+             <!-- Primary Audio Generation Button -->
+             <button type="button" onclick="generateAudio()" id="generateAudioBtn"
+class="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600
+hover:from-emerald-500 hover:to-cyan-500 text-white font-bold py-3.5 px-4 rounded-xl
+text-sm transition shadow-lg glow-cyan flex items-center justify-center space-x-2">
+
+                      🎙
+                <i class="fa-solid fa-microphone-lines text-base"></i>
+                <span>      Buat Audio</span>
+             </button>
+           </section>
+
+         <!-- 7. HASIL KONVERSI AUDIO -->
+         <section id="hasilKonversi" class="glass-panel rounded-2xl p-5 border
+border-cardBorder space-y-4">
+            <div class="flex items-center justify-between border-b border-cardBorder pb-3">
+               <div class="flex items-center space-x-2">
+                   <span class="w-7 h-7 rounded-lg bg-emerald-600/30 text-emerald-400 flex
+items-center justify-center font-bold text-sm">7</span>
+                   <h2 class="text-base font-bold text-white tracking-wide">HASIL
+KONVERSI AUDIO</h2>
+
+               </div>
+               <span class="text-xs text-emerald-400 bg-emerald-950/60 px-2.5 py-1
+rounded-full border border-emerald-500/30">Modul 7</span>
+             </div>
+
+              <!-- Waveform Animation Display -->
+              <div class="p-4 bg-slate-950/90 rounded-xl border border-cardBorder
+space-y-3">
+             <div class="flex items-center justify-center space-x-1 h-16"
+id="outputWaveform">
+                <div class="w-1.5 bg-emerald-500 h-4 rounded-full"></div>
+                <div class="w-1.5 bg-teal-400 h-8 rounded-full"></div>
+                <div class="w-1.5 bg-cyan-500 h-12 rounded-full"></div>
+                <div class="w-1.5 bg-violet-500 h-16 rounded-full"></div>
+                <div class="w-1.5 bg-violet-400 h-10 rounded-full"></div>
+                <div class="w-1.5 bg-cyan-500 h-14 rounded-full"></div>
+                <div class="w-1.5 bg-teal-400 h-8 rounded-full"></div>
+                <div class="w-1.5 bg-emerald-500 h-5 rounded-full"></div>
+                <div class="w-1.5 bg-cyan-400 h-11 rounded-full"></div>
+                <div class="w-1.5 bg-violet-500 h-7 rounded-full"></div>
+             </div>
+
+                <!-- Audio Player Controls -->
+                <div class="flex items-center space-x-3">
+                   <button type="button" onclick="togglePlayOutput()" id="playOutputBtn"
+class="w-10 h-10 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white flex
+items-center justify-center shadow transition shrink-0">
+                      <i class="fa-solid fa-play text-sm" id="playOutputIcon"></i>
+                   </button>
+                   <div class="flex-1 space-y-1">
+                      <div class="flex items-center justify-between text-xs font-mono
+text-slate-300">
+                         <span id="currentTimeDisplay">00:00</span>
+                         <span id="totalDurationDisplay">00:25</span>
+                      </div>
+                      <input type="range" id="audioSeekSlider" value="0" max="100"
+class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer
+accent-emerald-500">
+                   </div>
+                   <div class="flex items-center space-x-2 text-slate-400 shrink-0">
+                      <button onclick="toggleMute()" class="hover:text-white"><i
+class="fa-solid fa-volume-high" id="volumeIcon"></i></button>
+                      <span class="text-xs font-mono" id="outputBitrate">02S</span>
+                   </div>
+                </div>
+             </div>
+
+              <!-- Metadata Grid -->
+
+            <div class="grid grid-cols-4 gap-2 text-center text-xs bg-slate-900/60 p-3
+rounded-xl border border-cardBorder">
+              <div>
+                 <span class="block text-[10px] text-slate-400">Nama File</span>
+                 <strong class="text-slate-200 font-medium truncate block"
+id="metaFileName">elfas_audio_001.mp3</strong>
+              </div>
+              <div>
+                 <span class="block text-[10px] text-slate-400">Durasi</span>
+                 <strong class="text-slate-200 font-medium"
+id="metaDuration">00:25</strong>
+              </div>
+              <div>
+                 <span class="block text-[10px] text-slate-400">Format</span>
+                 <strong class="text-slate-200 font-medium">Audio asli</strong>
+              </div>
+              <div>
+                 <span class="block text-[10px] text-slate-400">Ukuran</span>
+                 <strong class="text-slate-200 font-medium" id="metaFileSize">256
+KB</strong>
+              </div>
+            </div>
+
+              <!-- Output Action Buttons -->
+              <div class="space-y-2.5 pt-1">
+                 <button type="button" onclick="downloadAudioFile()" class="w-full
+bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-4 rounded-xl text-xs
+transition shadow-md flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-download"></i>
+                    <span>⬇ Simpan File (Download)</span>
+                 </button>
+                 <button type="button" onclick="shareAudioFile()" class="w-full
+bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500
+text-white font-semibold py-3 px-4 rounded-xl text-xs transition shadow-md flex items-center
+justify-center space-x-2">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <span>↗ Bagikan (Share)</span>
+                 </button>
+                 <button type="button" onclick="resetAllState()" class="w-full bg-rose-950/40
+hover:bg-rose-900/60 text-rose-300 font-semibold py-2.5 px-4 rounded-xl text-xs transition
+border border-rose-500/30 flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>↺ Reset (Bersihkan Semua)</span>
+                 </button>
+              </div>
+
+             <p class="text-[11px] text-slate-400 text-center">Audio yang dihasilkan akan
+otomatis tersimpan sementara di perangkat Anda.</p>
+
+          </section>
+
+       </div>
+
+    </main>
+  </div>
+
+   <footer class="mt-auto border-t border-cardBorder glass-panel py-6 px-4 text-center
+space-y-4">
+      <div>
+         <h3 class="text-sm font-bold text-slate-200 mb-3">Fitur Unggulan ELFA'S Audio
+Generator Pro</h3>
+         <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 max-w-5xl mx-auto">
+           <div class="p-3 bg-slate-900/60 rounded-xl border border-cardBorder flex flex-col
+items-center text-center space-y-1">
+              <i class="fa-solid fa-headphones text-violet-400 text-base"></i>
+              <strong class="text-xs text-slate-200">Kualitas Suara HD</strong>
+              <span class="text-[10px] text-slate-400">Suara jernih dan natural</span>
+           </div>
+           <div class="p-3 bg-slate-900/60 rounded-xl border border-cardBorder flex flex-col
+items-center text-center space-y-1">
+              <i class="fa-solid fa-brain text-cyan-400 text-base"></i>
+              <strong class="text-xs text-slate-200">AI Cerdas</strong>
+              <span class="text-[10px] text-slate-400">Script & suara lebih optimal</span>
+           </div>
+           <div class="p-3 bg-slate-900/60 rounded-xl border border-cardBorder flex flex-col
+items-center text-center space-y-1">
+              <i class="fa-solid fa-face-smile text-amber-400 text-base"></i>
+              <strong class="text-xs text-slate-200">Mudah Digunakan</strong>
+              <span class="text-[10px] text-slate-400">Antarmuka sederhana</span>
+           </div>
+           <div class="p-3 bg-slate-900/60 rounded-xl border border-cardBorder flex flex-col
+items-center text-center space-y-1">
+              <i class="fa-solid fa-shield-halved text-emerald-400 text-base"></i>
+              <strong class="text-xs text-slate-200">Aman & Privasi</strong>
+              <span class="text-[10px] text-slate-400">Data Anda terlindungi</span>
+           </div>
+           <div class="p-3 bg-slate-900/60 rounded-xl border border-cardBorder flex flex-col
+items-center text-center space-y-1 col-span-2 sm:col-span-1">
+              <i class="fa-solid fa-cloud text-blue-400 text-base"></i>
+              <strong class="text-xs text-slate-200">Cloud Processing</strong>
+              <span class="text-[10px] text-slate-400">Proses cepat & stabil</span>
+           </div>
+         </div>
+      </div>
+      <div class="border-t border-cardBorder pt-4 flex flex-col sm:flex-row items-center
+justify-between max-w-5xl mx-auto text-xs text-slate-400">
+         <p>© 2026 ELFA'S Audio Generator Pro. Semua hak dilindungi.</p>
+
+       <p class="italic mt-1 sm:mt-0">"Kreasi suara berkualitas, komunikasi tanpa
+batas."</p>
+     </div>
+  </footer>
+
+    <!-- Bantuan Modal -->
+    <div id="bantuanModal" class="fixed inset-0 z-50 flex items-center justify-center
+bg-black/70 backdrop-blur-sm hidden">
+       <div class="glass-panel w-full max-w-lg rounded-2xl p-6 border border-cardBorder
+space-y-4 m-4">
+          <div class="flex items-center justify-between border-b border-cardBorder pb-3">
+            <h3 class="font-bold text-base text-white flex items-center space-x-2">
+               <i class="fa-regular fa-circle-question text-cyan-400"></i>
+               <span>Panduan Bantuan ELFA'S Audio</span>
+            </h3>
+            <button onclick="closeModal('bantuanModal')" class="text-slate-400
+hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+          </div>
+          <div class="space-y-3 text-xs text-slate-300 leading-relaxed">
+            <p><strong>1. Sumber Suara:</strong> Masukkan prompt karakter atau gunakan
+fitur Kloning Suara (Rekam/Unggah) serta tentukan identitas suara.</p>
+            <p><strong>2. Mesin Model AI:</strong> Pilih salah satu engine AI (Cartesia,
+ElevenLabs, Akool, Hailuo, Google Studio).</p>
+            <p><strong>3. Gaya & Skenario:</strong> Pilih gaya emosi dan skenario
+penggunaan untuk hasil script & audio yang natural.</p>
+            <p><strong>4. Pembuatan Audio:</strong> Masukkan naskah di Modul 6, klik
+Konfirmasi, lalu klik <strong>Buat Audio</strong>.</p>
+          </div>
+          <div class="pt-3 border-t border-cardBorder flex justify-end">
+            <button onclick="closeModal('bantuanModal')" class="bg-violet-600
+hover:bg-violet-500 text-white px-4 py-2 rounded-xl text-xs
+font-semibold">Mengerti</button>
+          </div>
+       </div>
+    </div>
+
+  <!-- Profile Modal -->
+  <div id="profileModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70
+backdrop-blur-sm hidden">
+     <div class="glass-panel w-full max-w-sm rounded-2xl p-6 border border-cardBorder
+space-y-4 text-center m-4">
+        <div class="w-16 h-16 rounded-full bg-gradient-to-r from-violet-500 to-cyan-500
+mx-auto flex items-center justify-center text-xl font-bold shadow-lg">EF</div>
+        <div>
+          <h3 class="font-bold text-base text-white">Elfa Studio Pro User</h3>
+          <p class="text-xs text-slate-400">elfa.studio@audio-generator.pro</p>
+        </div>
+
+       <div class="p-3 bg-slate-900/80 rounded-xl text-xs space-y-1 border
+border-cardBorder text-left">
+         <div class="flex justify-between"><span class="text-slate-400">Status
+Akun:</span><strong class="text-emerald-400">Premium Pro</strong></div>
+         <div class="flex justify-between"><span class="text-slate-400">Kouta
+Generator:</span><strong class="text-violet-400">Unlimited</strong></div>
+       </div>
+       <div class="pt-2">
+         <button onclick="closeModal('profileModal')" class="w-full bg-slate-800
+hover:bg-slate-700 text-slate-200 py-2 rounded-xl text-xs font-semibold">Tutup</button>
+       </div>
+    </div>
+  </div>
+
+  <!-- AI Studio Info Modal -->
+  <div id="aiStudioModal" class="fixed inset-0 z-50 flex items-center justify-center
+bg-black/70 backdrop-blur-sm hidden">
+     <div class="glass-panel w-full max-w-md rounded-2xl p-6 border border-cardBorder
+space-y-4 m-4">
+        <div class="flex items-center justify-between border-b border-cardBorder pb-3">
+          <h3 class="font-bold text-base text-white flex items-center space-x-2">
+             <i class="fa-solid fa-wand-magic-sparkles text-violet-400"></i>
+             <span>AI Powered Studio</span>
+          </h3>
+          <button onclick="closeModal('aiStudioModal')" class="text-slate-400
+hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          ELFA'S Audio Generator Pro memadukan teknologi Text-to-Speech mutakhir dari
+Cartesia, ElevenLabs, dan Google Studio untuk menghasilkan intonasi bahasa Indonesia
+yang paling natural, ekspresif, dan berstandar siaran profesional.
+        </p>
+        <div class="pt-2 flex justify-end">
+          <button onclick="closeModal('aiStudioModal')" class="bg-violet-600
+hover:bg-violet-500 text-white px-4 py-2 rounded-xl text-xs font-semibold">Tutup</button>
+        </div>
+     </div>
+  </div>
+
+  <!-- Tips Penulisan Modal -->
+  <div id="tipsModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70
+backdrop-blur-sm hidden">
+     <div class="glass-panel w-full max-w-lg rounded-2xl p-6 border border-cardBorder
+space-y-4 m-4">
+        <div class="flex items-center justify-between border-b border-cardBorder pb-3">
+          <h3 class="font-bold text-base text-white flex items-center space-x-2">
+             <i class="fa-regular fa-lightbulb text-cyan-400"></i>
+             <span>Tips Penulisan Script Profesional</span>
+
+           </h3>
+           <button onclick="closeModal('tipsModal')" class="text-slate-400
+hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <ul class="space-y-2 text-xs text-slate-300 list-disc pl-4 leading-relaxed">
+           <li>Gunakan tanda baca koma (,) dan titik (.) untuk mengatur jeda alami
+pembacaan AI.</li>
+           <li>Gunakan tombol <strong>[Jeda]</strong> untuk menambahkan tanda jeda
+khusus di antara kalimat atau paragraf.</li>
+           <li>Sesuaikan skema penulisan dengan skenario yang dipilih (contoh: Iklan
+membutuhkan tempo cepat dan persuasif).</li>
+           <li>Hindari singkatan membingungkan; tuliskan angka dengan huruf jika
+pengucapan khusus diperlukan (contoh: "Rp 50.000" dibaca "lima puluh ribu rupiah").</li>
+        </ul>
+        <div class="pt-3 border-t border-cardBorder flex justify-end">
+           <button onclick="closeModal('tipsModal')" class="bg-cyan-600 hover:bg-cyan-500
+text-white px-4 py-2 rounded-xl text-xs font-semibold">Paham</button>
+        </div>
+     </div>
+   </div>
+
+   <!-- Notification Toast -->
+   <div id="toastNotification" class="fixed bottom-6 right-6 z-50 transform translate-y-20
+opacity-0 transition-all duration-300 glass-panel border border-violet-500/40 px-4 py-3
+rounded-xl shadow-2xl flex items-center space-x-3">
+      <div id="toastIcon" class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex
+items-center justify-center text-sm"><i class="fa-solid fa-check"></i></div>
+      <div>
+         <h4 class="text-xs font-bold text-white" id="toastTitle">Berhasil</h4>
+         <p class="text-[11px] text-slate-300" id="toastMessage">Pengaturan berhasil
+diperbarui.</p>
+      </div>
+   </div>
+
+  <script>
+    // Application State Object
+    const appState = {
+       voicePrompt: "",
+       cloneTab: "record", // 'record' or 'upload'
+       isRecording: false,
+       recordingTime: 0,
+       recordingTimerInterval: null,
+       hasRecording: false,
+       mediaRecorder: null,
+       audioChunks: [],
+       recordedAudioBlob: null,
+       recordedAudioUrl: null,
+       mediaStream: null,
+
+          uploadedFile: null,
+          gender: "Pria",
+          ageGroup: "Pertengahan",
+          characterName: "Narator Pro",
+          selectedEngine: "Cartesia",
+          selectedStyles: ["Tenang"],
+          selectedScenario: "Berita",
+          isConfirmed: false,
+          audioBlob: null,
+          audioUrl: null,
+          isPlayingOutput: false,
+          audioElement: null,
+          playbackTimer: null,
+          currentTime: 0,
+          totalDuration: 25
+     };
+
+     // Initialize on Window Load
+     window.onload = function() {
+         updateScriptStats();
+         updateConfigSummary();
+     };
+
+     // Mobile Menu Toggle
+     function toggleMobileMenu() {
+        const sidebar = document.getElementById('sidebarNav');
+        const icon = document.getElementById('mobileMenuIcon');
+        if (sidebar.classList.contains('hidden')) {
+            sidebar.classList.remove('hidden');
+            sidebar.classList.add('flex', 'absolute', 'top-16', 'left-3', 'right-3', 'z-50',
+'bg-darkBg/95', 'border', 'border-cardBorder');
+            icon.className = "fa-solid fa-xmark text-xl";
+        } else {
+            sidebar.classList.add('hidden');
+            sidebar.classList.remove('flex', 'absolute', 'top-16', 'left-3', 'right-3', 'z-50',
+'bg-darkBg/95');
+            icon.className = "fa-solid fa-bars text-xl";
+        }
+     }
+
+     // Scroll to Section Helper
+     function scrollToSection(sectionId) {
+        const el = document.getElementById(sectionId);
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+        }
+        if (window.innerWidth < 1024) {
+            const sidebar = document.getElementById('sidebarNav');
+
+            if (!sidebar.classList.contains('hidden')) {
+                toggleMobileMenu();
+            }
+        }
+    }
+
+    // Modal Controls
+    function openModal(modalId) {
+       document.getElementById(modalId).classList.remove('hidden');
+    }
+    function closeModal(modalId) {
+       document.getElementById(modalId).classList.add('hidden');
+    }
+
+    // Toast Notification System
+    function showToast(title, message, isSuccess = true) {
+        const toast = document.getElementById('toastNotification');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastMessage = document.getElementById('toastMessage');
+        const toastIcon = document.getElementById('toastIcon');
+
+        toastTitle.innerText = title;
+        toastMessage.innerText = message;
+
+         if (isSuccess) {
+             toastIcon.className = "w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm";
+             toastIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
+         } else {
+             toastIcon.className = "w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center text-sm";
+             toastIcon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+         }
+
+        toast.classList.remove('translate-y-20', 'opacity-0');
+        setTimeout(() => {
+           toast.classList.add('translate-y-20', 'opacity-0');
+        }, 3500);
+    }
+
+    // Character Count Helper
+    function updateCharCount(inputId, counterId, limit) {
+       const val = document.getElementById(inputId).value;
+       document.getElementById(counterId).innerText = `${val.length} / ${limit}`;
+       if (inputId === 'voicePromptInput') {
+           appState.voicePrompt = val;
+       }
+    }
+
+      // Clone Source Tab Switcher
+      function switchCloneTab(tab) {
+         appState.cloneTab = tab;
+         const recBtn = document.getElementById('tabRecordBtn');
+         const uplBtn = document.getElementById('tabUploadBtn');
+         const recSec = document.getElementById('recordSection');
+         const uplSec = document.getElementById('uploadSection');
+
+       if (tab === 'record') {
+           recBtn.className = "flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl text-xs font-semibold transition bg-violet-600 text-white shadow-md";
+           uplBtn.className = "flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl text-xs font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700 border border-cardBorder";
+           recSec.classList.remove('hidden');
+           uplSec.classList.add('hidden');
+       } else {
+           uplBtn.className = "flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl text-xs font-semibold transition bg-violet-600 text-white shadow-md";
+           recBtn.className = "flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl text-xs font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700 border border-cardBorder";
+           recSec.classList.add('hidden');
+           uplSec.classList.remove('hidden');
+       }
+    }
+
+      // Voice Recording Workflow using MediaRecorder API
+      async function toggleRecording() {
+         const btn = document.getElementById('recordMainBtn');
+         const icon = document.getElementById('recordIcon');
+         const text = document.getElementById('recordBtnText');
+         const status = document.getElementById('recordStatusLabel');
+
+           if (!appState.isRecording) {
+               // Start Recording
+               try {
+                  appState.mediaStream = await navigator.mediaDevices.getUserMedia({ audio:
+true });
+
+               // Determine supported MIME type
+               let mimeType = 'audio/webm';
+               if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+                   mimeType = 'audio/webm;codecs=opus';
+               } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+                   mimeType = 'audio/mp4';
+               }
+
+           appState.audioChunks = [];
+           appState.mediaRecorder = new MediaRecorder(appState.mediaStream, {
+mimeType });
+
+            appState.mediaRecorder.ondataavailable = (event) => {
+               if (event.data && event.data.size > 0) {
+                   appState.audioChunks.push(event.data);
+               }
+            };
+
+           appState.mediaRecorder.onstop = () => {
+             // Create final Blob after recording has fully stopped
+             if (appState.audioChunks.length > 0) {
+                 appState.recordedAudioBlob = new Blob(appState.audioChunks, { type:
+mimeType });
+
+               // Revoke previous URL if any
+               if (appState.recordedAudioUrl) {
+                   URL.revokeObjectURL(appState.recordedAudioUrl);
+               }
+               appState.recordedAudioUrl =
+URL.createObjectURL(appState.recordedAudioBlob);
+               appState.hasRecording = true;
+
+                  document.getElementById('playRecordBtn').disabled = false;
+                  document.getElementById('playRecordBtn').className = "flex items-center space-x-1.5 bg-slate-800 text-slate-200 hover:bg-slate-700 px-3 py-2 rounded-lg text-xs font-medium transition border border-cardBorder cursor-pointer";
+                  document.getElementById('deleteRecordBtn').disabled = false;
+                  document.getElementById('deleteRecordBtn').className = "flex items-center space-x-1.5 bg-slate-800 text-rose-400 hover:bg-slate-700 px-3 py-2 rounded-lg text-xs font-medium transition border border-cardBorder cursor-pointer";
+
+                    showToast("Berhasil", "Rekaman suara berhasil disimpan.");
+                    updateConfigSummary();
+                 } else {
+                    showToast("Peringatan", "Tidak ada data audio yang terekam.", false);
+                 }
+
+                 // Release microphone tracks
+                 if (appState.mediaStream) {
+                     appState.mediaStream.getTracks().forEach(track => track.stop());
+                     appState.mediaStream = null;
+                 }
+            };
+
+            appState.mediaRecorder.onerror = (event) => {
+
+                 console.error("MediaRecorder error:", event);
+                 showToast("Kesalahan", "Terjadi kesalahan saat merekam audio.", false);
+                 stopRecordingStateUI();
+            };
+
+            appState.mediaRecorder.start(250); // Collect data chunks every 250ms
+            appState.isRecording = true;
+
+             icon.className = "fa-solid fa-stop";
+             text.innerText = "Hentikan Rekaman";
+             btn.className = "flex items-center space-x-1.5 bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-lg text-xs font-medium transition shadow";
+             status.innerText = "Status: Merekam Suara...";
+
+            appState.recordingTime = 0;
+            appState.recordingTimerInterval = setInterval(() => {
+              appState.recordingTime++;
+              let secs = String(appState.recordingTime % 60).padStart(2, '0');
+              let mins = String(Math.floor(appState.recordingTime / 60)).padStart(2, '0');
+              document.getElementById('recordTimer').innerText = `${mins}:${secs} / 00:30`;
+               if (appState.recordingTime >= 30) {
+                   toggleRecording();
+               }
+            }, 1000);
+
+          } catch (err) {
+             console.error("Microphone access error:", err);
+             showToast("Akses Ditolak", "Gagal mengakses mikrofon. Periksa izin perangkat Anda.", false);
+          }
+       } else {
+          // Stop Recording
+          stopRecordingStateUI();
+       }
+    }
+
+    function stopRecordingStateUI() {
+      if (appState.isRecording) {
+          appState.isRecording = false;
+          clearInterval(appState.recordingTimerInterval);
+
+          const btn = document.getElementById('recordMainBtn');
+          const icon = document.getElementById('recordIcon');
+          const text = document.getElementById('recordBtnText');
+          const status = document.getElementById('recordStatusLabel');
+
+          icon.className = "fa-solid fa-microphone";
+
+           text.innerText = "Rekam Ulang";
+           btn.className = "flex items-center space-x-1.5 bg-violet-600 hover:bg-violet-500 text-white px-4 py-2 rounded-lg text-xs font-medium transition shadow";
+           status.innerText = "Status: Rekaman Tersimpan";
+
+             if (appState.mediaRecorder && appState.mediaRecorder.state !== "inactive") {
+                 appState.mediaRecorder.stop();
+             } else if (appState.mediaStream) {
+                 appState.mediaStream.getTracks().forEach(track => track.stop());
+                 appState.mediaStream = null;
+             }
+         }
+     }
+
+     function playRecording() {
+       if (!appState.hasRecording || !appState.recordedAudioUrl) {
+           showToast("Peringatan", "Belum ada rekaman suara yang tersedia.", false);
+           return;
+       }
+
+         const audioElement = new Audio(appState.recordedAudioUrl);
+         audioElement.play().then(() => {
+             showToast("Pemutaran", "Memutar preview rekaman suara referensi...");
+         }).catch(error => {
+             console.error("Playback error:", error);
+             showToast("Kesalahan", "Gagal memutar audio rekaman.", false);
+         });
+     }
+
+     function deleteRecording() {
+       appState.hasRecording = false;
+       appState.recordingTime = 0;
+       if (appState.recordedAudioUrl) {
+           URL.revokeObjectURL(appState.recordedAudioUrl);
+           appState.recordedAudioUrl = null;
+       }
+       appState.recordedAudioBlob = null;
+       appState.audioChunks = [];
+
+       document.getElementById('recordTimer').innerText = "00:00 / 00:30";
+       document.getElementById('recordStatusLabel').innerText = "Status: Siap Merekam";
+       document.getElementById('playRecordBtn').disabled = true;
+       document.getElementById('playRecordBtn').className = "flex items-center space-x-1.5 bg-slate-800 text-slate-500 px-3 py-2 rounded-lg text-xs font-medium transition border border-cardBorder cursor-not-allowed";
+       document.getElementById('deleteRecordBtn').disabled = true;
+
+       document.getElementById('deleteRecordBtn').className = "flex items-center space-x-1.5 bg-slate-800 text-slate-500 px-3 py-2 rounded-lg text-xs font-medium transition border border-cardBorder cursor-not-allowed";
+       showToast("Dihapus", "Rekaman suara telah dihapus.");
+       updateConfigSummary();
+    }
+
+    // Audio File Upload Handling
+    function handleAudioUpload(event) {
+       const file = event.target.files[0];
+       if (file) {
+           if (file.size > 25 * 1024 * 1024) {
+               showToast("Kesalahan", "Ukuran file maksimal 25MB.", false);
+               return;
+           }
+           appState.uploadedFile = file;
+           document.getElementById('uploadFileName').innerText = file.name;
+           document.getElementById('uploadFileSize').innerText = `(${(file.size / 1024).toFixed(1)} KB)`;
+           document.getElementById('uploadedFileInfo').classList.remove('hidden');
+           showToast("Unggahan Berhasil", `File ${file.name} berhasil dimuat.`);
+           updateConfigSummary();
+       }
+    }
+
+     function removeUploadedFile() {
+       appState.uploadedFile = null;
+       document.getElementById('audioFileInput').value = "";
+       document.getElementById('uploadedFileInfo').classList.add('hidden');
+       showToast("Dihapus", "File audio unggahan dihapus.");
+       updateConfigSummary();
+     }
+
+      // Identity Settings
+      function setGender(gender) {
+          appState.gender = gender;
+          if (gender === 'Pria') {
+              document.getElementById('genderPria').className = "py-2 px-3 rounded-xl text-xs font-semibold transition bg-violet-600 text-white border border-violet-500 shadow";
+              document.getElementById('genderWanita').className = "py-2 px-3 rounded-xl text-xs font-semibold transition bg-slate-800 text-slate-300 border border-cardBorder hover:bg-slate-700";
+          } else {
+              document.getElementById('genderWanita').className = "py-2 px-3 rounded-xl text-xs font-semibold transition bg-violet-600 text-white border border-violet-500 shadow";
+              document.getElementById('genderPria').className = "py-2 px-3 rounded-xl text-xs font-semibold transition bg-slate-800 text-slate-300 border border-cardBorder hover:bg-slate-700";
+
+         }
+         updateConfigSummary();
+     }
+
+     function setAgeGroup(age) {
+        appState.ageGroup = age;
+        ['Muda', 'Pertengahan', 'Tua'].forEach(a => {
+            const btn = document.getElementById(`age${a}`);
+            if (a === age) {
+                btn.className = "py-2 px-2 rounded-xl text-xs font-semibold transition bg-violet-600 text-white border border-violet-500 shadow";
+            } else {
+                btn.className = "py-2 px-2 rounded-xl text-xs font-semibold transition bg-slate-800 text-slate-300 border border-cardBorder hover:bg-slate-700";
+            }
+        });
+        updateConfigSummary();
+     }
+
+     // Voice Test Function
+     function runVoiceTest() {
+  const charName = document.getElementById('characterNameInput').value.trim() || 'Narator Pro';
+  appState.characterName = charName;
+  const sentence = `Halo, saya ${charName}. Ini adalah contoh uji suara ELFA Audio Generator Pro.`;
+  document.getElementById('testSentenceDisplay').innerText = `"${sentence}"`;
+  const btnText = document.getElementById('testVoiceBtnText'); const btnIcon = document.getElementById('testVoiceIcon');
+  if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) { showToast('TTS tidak tersedia', 'Browser ini tidak mendukung suara ucapan. Coba Chrome atau siapkan integrasi TTS AI.', false); return; }
+  window.speechSynthesis.cancel();
+  const speak = () => { const u = new SpeechSynthesisUtterance(sentence); u.lang = 'id-ID'; u.rate = 1; u.pitch = appState.gender === 'Wanita' ? 1.15 : 0.92; const v = window.speechSynthesis.getVoices().find(x => /^id(-|$)/i.test(x.lang) || /^in(-|$)/i.test(x.lang)); if (v) u.voice = v; u.onstart = () => { btnText.innerText='Memutar Uji Suara...'; btnIcon.className='fa-solid fa-spinner fa-spin'; showToast('Uji Suara','Membacakan contoh menggunakan suara perangkat.'); }; u.onend = () => { btnText.innerText='Uji Suara'; btnIcon.className='fa-solid fa-play'; }; u.onerror = e => { btnText.innerText='Uji Suara'; btnIcon.className='fa-solid fa-play'; showToast('Gagal memutar','Periksa pengaturan Text-to-Speech perangkat.',false); console.warn(e); }; window.speechSynthesis.speak(u); };
+  if (window.speechSynthesis.getVoices().length) speak(); else { let done=false; const handler=()=>{if(!done){done=true;window.speechSynthesis.removeEventListener?.('voiceschanged',handler);speak();}}; window.speechSynthesis.addEventListener?.('voiceschanged',handler,{once:true}); setTimeout(()=>{if(!done){done=true;speak();}},700); }
+}
+
+function selectEngine(engineName) {
+       appState.selectedEngine = engineName;
+       const engines = ['Akool', 'Cartesia', 'ElevenLabs', 'Hailuo', 'Google Studio'];
+
+        engines.forEach(eng => {
+            const card = document.getElementById(`engine${eng.replace(/\s+/g, '')}`);
+            if (eng === engineName) {
+                card.className = "engine-card cursor-pointer p-3 rounded-xl border-2 border-violet-500 bg-violet-950/20 flex flex-col items-center text-center space-y-2 transition relative";
+                if (!card.querySelector('.absolute')) {
+                    const check = document.createElement('div');
+                    check.className = "absolute top-2 right-2 w-4 h-4 rounded-full bg-violet-500 text-white flex items-center justify-center text-[10px]";
+                    check.innerHTML = '<i class="fa-solid fa-check"></i>';
+                    card.appendChild(check);
+                }
+            } else {
+                card.className = "engine-card cursor-pointer p-3 rounded-xl border border-cardBorder bg-slate-900/60 hover:border-violet-500/60 flex flex-col items-center text-center space-y-2 transition relative";
+                const check = card.querySelector('.absolute');
+                if (check) check.remove();
+            }
+        });
+        updateConfigSummary();
+      }
+
+     // Style Selection (Multi-select)
+     function toggleStyle(styleName) {
+        const idx = appState.selectedStyles.indexOf(styleName);
+        if (idx > -1) {
+            if (appState.selectedStyles.length > 1) {
+                appState.selectedStyles.splice(idx, 1);
+            } else {
+                showToast("Peringatan", "Minimal 1 gaya suara harus dipilih.", false);
+                return;
+            }
+        } else {
+            appState.selectedStyles.push(styleName);
+        }
+
+      const stylesList = ['Berwibawa', 'Tenang', 'Percaya Diri', 'Antusias', 'Bersemangat',
+'Ramah', 'Ceria', 'Keras'];
+      stylesList.forEach(st => {
+          const btn = document.getElementById(`style${st}`);
+          const isSelected = appState.selectedStyles.includes(st);
+          if (isSelected) {
+              btn.className = "style-chip p-2.5 rounded-xl border-2 border-amber-500 bg-amber-950/20 flex items-center space-x-2 text-left transition relative";
+              if (!btn.querySelector('.absolute')) {
+                  const check = document.createElement('div');
+
+                   check.className = "absolute top-1.5 right-1.5 w-3.5 h-3.5 rounded-full bg-amber-500 text-white flex items-center justify-center text-[8px]";
+                   check.innerHTML = '<i class="fa-solid fa-check"></i>';
+                   btn.appendChild(check);
+               }
+            } else {
+               btn.className = "style-chip p-2.5 rounded-xl border border-cardBorder bg-slate-900/60 hover:border-amber-500/50 flex items-center space-x-2 text-left transition relative";
+               const check = btn.querySelector('.absolute');
+               if (check) check.remove();
+            }
+        });
+        updateConfigSummary();
+      }
+
+      // Scenario Selection
+      function selectScenario(scenarioName) {
+         appState.selectedScenario = scenarioName;
+         const scenarios = ['Iklan', 'Karakter dan Animasi', 'Berita', 'Hiburan dan TV',
+'Informatif dan Edukatif', 'Dokumenter', 'Naratif', 'Percakapan', 'Medsos'];
+         scenarios.forEach(sc => {
+             const card = document.getElementById(`scenario${sc}`);
+             if (sc === scenarioName) {
+                 card.className = "scenario-card cursor-pointer p-3 rounded-xl border-2 border-emerald-500 bg-emerald-950/20 flex flex-col items-center text-center space-y-1.5 transition relative";
+                 if (!card.querySelector('.absolute')) {
+                     const check = document.createElement('div');
+                     check.className = "absolute top-1.5 right-1.5 w-3.5 h-3.5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[8px]";
+                     check.innerHTML = '<i class="fa-solid fa-check"></i>';
+                     card.appendChild(check);
+                 }
+             } else {
+                 card.className = "scenario-card cursor-pointer p-3 rounded-xl border border-cardBorder bg-slate-900/60 hover:border-emerald-500/60 flex flex-col items-center text-center space-y-1.5 transition relative";
+                 const check = card.querySelector('.absolute');
+                 if (check) check.remove();
+             }
+         });
+         updateConfigSummary();
+      }
+
+     // Live Configuration Summary Update
+     function updateConfigSummary() {
+
+       const charName = document.getElementById('characterNameInput').value.trim() ||
+"Narator Pro";
+       appState.characterName = charName;
+
+       document.getElementById('sumEngine').innerText = `: ${appState.selectedEngine}`;
+       document.getElementById('sumSource').innerText = `: ${appState.voicePrompt ? 'Prompt Karakter Suara' : (appState.hasRecording ? 'Rekaman Suara' : (appState.uploadedFile ? 'File Audio Unggahan' : 'Default'))}`;
+       document.getElementById('sumCharName').innerText = `: ${charName}`;
+       document.getElementById('sumGenderAge').innerText = `: ${appState.gender} / ${appState.ageGroup}`;
+       document.getElementById('sumStyles').innerText = `: ${appState.selectedStyles.join(', ')}`;
+       document.getElementById('sumScenario').innerText = `: ${appState.selectedScenario}`;
+
+        let statusText = "Siap Digunakan";
+        if (appState.hasRecording) statusText = "Rekaman Suara Aktif";
+        if (appState.uploadedFile) statusText = "File Audio Terunggah";
+        document.getElementById('sumStatus').innerText = statusText;
+    }
+
+     // Confirmation Action
+     function confirmSettings() {
+        appState.isConfirmed = true;
+        showToast("Konfirmasi Berhasil", "Pengaturan suara dan mesin AI telah dikonfirmasi.");
+     }
+
+    // Script Editor Helpers
+    function updateScriptStats() {
+       const text = document.getElementById('scriptTextInput').value;
+       document.getElementById('charCount').innerText = text.length;
+       const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+       document.getElementById('wordCount').innerText = words;
+    }
+
+    function clearScript() {
+      document.getElementById('scriptTextInput').value = '';
+      updateScriptStats();
+      showToast("Dihapus", "Teks naskah telah dibersihkan.");
+    }
+
+    function formatText(type) {
+      const textarea = document.getElementById('scriptTextInput');
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const selectedText = textarea.value.substring(start, end);
+
+       if (!selectedText) {
+           showToast("Peringatan", "Pilih teks terlebih dahulu untuk diformat.", false);
+           return;
+       }
+
+       let formatted = selectedText;
+       if (type === 'bold') formatted = `**${selectedText}**`;
+       if (type === 'italic') formatted = `*${selectedText}*`;
+       if (type === 'underline') formatted = `__${selectedText}__`;
+
+       textarea.value = textarea.value.substring(0, start) + formatted +
+textarea.value.substring(end);
+       updateScriptStats();
+       showToast("Format Diterapkan", "Gaya teks diperbarui.");
+     }
+
+     function insertPause() {
+       const textarea = document.getElementById('scriptTextInput');
+       const pos = textarea.selectionStart;
+       textarea.value = textarea.value.substring(0, pos) + " [Pause: 1s] " +
+textarea.value.substring(pos);
+       updateScriptStats();
+       showToast("Disisipkan", "Tanda jeda [Pause] ditambahkan.");
+     }
+
+     // Improve Script with AI Simulation
+     function improveScriptAI() {
+         const textarea = document.getElementById('scriptTextInput');
+         const currentText = textarea.value.trim();
+         if (!currentText) {
+             showToast("Peringatan", "Tulis naskah terlebih dahulu sebelum diperbaiki.", false);
+             return;
+         }
+
+        showToast("Memproses AI", "Menyesuaikan naskah dengan skenario & gaya...");
+        setTimeout(() => {
+            textarea.value = `[${appState.selectedScenario.toUpperCase()} - ${appState.selectedStyles.join(', ')}] ${currentText} (Telah dioptimalkan untuk intonasi natural).`;
+            updateScriptStats();
+            showToast("Berhasil", "Script berhasil disempurnakan oleh AI.");
+        }, 1200);
+     }
+
+     // Audio Generation Handler
+     async function generateAudio() {
+  const text = document.getElementById('scriptTextInput').value.trim();
+  if (!text) { showToast('Peringatan','Naskah tidak boleh kosong.',false); return; }
+  if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) { showToast('TTS tidak tersedia','Browser tidak mendukung pembacaan teks. Integrasi TTS AI memerlukan endpoint server.',false); return; }
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace(/\[Pause:\s*\d+(?:\.\d+)?s?\]/gi,' ... ')); u.lang='id-ID'; u.rate=1; u.pitch=appState.gender==='Wanita'?1.15:0.92;
+  const v=window.speechSynthesis.getVoices().find(x=>/^id(-|$)/i.test(x.lang)||/^in(-|$)/i.test(x.lang)); if(v)u.voice=v;
+  appState.currentUtterance=u; appState.currentText=text; appState.currentTime=0;
+  document.getElementById('currentTimeDisplay').innerText='00:00'; document.getElementById('audioSeekSlider').value=0; document.getElementById('totalDurationDisplay').innerText='—'; document.getElementById('metaDuration').innerText='Browser TTS'; document.getElementById('metaFileSize').innerText='Belum tersedia'; document.getElementById('metaFileName').innerText='TTS browser (tidak diekspor)';
+  u.onstart=()=>{appState.isPlayingOutput=true;updateOutputPlayButton(true);showToast('Memutar Naskah','Browser sedang membacakan teks. Suara ini belum menjadi berkas audio unduhan.');}; u.onend=()=>{appState.isPlayingOutput=false;updateOutputPlayButton(false);showToast('Selesai','Pembacaan naskah selesai.');}; u.onerror=()=>{appState.isPlayingOutput=false;updateOutputPlayButton(false);showToast('Gagal','Browser tidak dapat membacakan teks.',false);};
+  document.getElementById('hasilKonversi').scrollIntoView({behavior:'smooth'}); window.speechSynthesis.speak(u);
+}
+function updateOutputPlayButton(playing) { const i=document.getElementById('playOutputIcon'),b=document.getElementById('playOutputBtn'); if(!i||!b)return; i.className=playing?'fa-solid fa-pause text-sm':'fa-solid fa-play text-sm'; b.className='w-10 h-10 rounded-full '+(playing?'bg-amber-600 hover:bg-amber-500':'bg-emerald-600 hover:bg-emerald-500')+' text-white flex items-center justify-center shadow transition shrink-0'; }
+function togglePlayOutput() { if(appState.audioUrl){if(!appState.audioElement)appState.audioElement=new Audio(appState.audioUrl);const a=appState.audioElement;if(a.paused)a.play().then(()=>{appState.isPlayingOutput=true;updateOutputPlayButton(true);}).catch(()=>showToast('Gagal','Audio tidak dapat diputar.',false));else{a.pause();appState.isPlayingOutput=false;updateOutputPlayButton(false);}a.ontimeupdate=()=>{document.getElementById('currentTimeDisplay').innerText=formatAudioTime(a.currentTime);if(a.duration)document.getElementById('audioSeekSlider').value=a.currentTime/a.duration*100;};a.onended=()=>{appState.isPlayingOutput=false;updateOutputPlayButton(false);};return;} if(appState.currentUtterance&&'speechSynthesis'in window){if(window.speechSynthesis.speaking&&!window.speechSynthesis.paused){window.speechSynthesis.pause();appState.isPlayingOutput=false;updateOutputPlayButton(false);}else if(window.speechSynthesis.paused){window.speechSynthesis.resume();appState.isPlayingOutput=true;updateOutputPlayButton(true);}else generateAudio();return;}generateAudio(); }
+function formatAudioTime(t){t=Math.floor(t||0);return String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0');}
+function toggleMute(){if(appState.audioElement){appState.audioElement.muted=!appState.audioElement.muted;document.getElementById('volumeIcon').className=appState.audioElement.muted?'fa-solid fa-volume-xmark':'fa-solid fa-volume-high';}else showToast('Info','Kontrol volume mengikuti pengaturan perangkat/browser.');}
+
+
+
+     // Download Audio File
+     function downloadAudioFile(){const b=appState.audioBlob||appState.recordedAudioBlob;if(!b||!b.size||!/^audio\//i.test(b.type)){showToast('Audio belum tersedia','Belum ada berkas audio TTS untuk diunduh. Rekaman Modul B dapat disimpan; TTS browser tidak otomatis menjadi MP3.',false);return;}const ext=b.type.includes('webm')?'webm':b.type.includes('mp4')?'m4a':b.type.includes('wav')?'wav':b.type.includes('mpeg')?'mp3':'audio';const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='elfas_audio_'+Date.now()+'.'+ext;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500);showToast('Unduhan dimulai','Menyimpan audio dalam format '+ext.toUpperCase()+'.');}
+async function shareAudioFile(){const b=appState.audioBlob||appState.recordedAudioBlob;if(!b||!b.size||!/^audio\//i.test(b.type)){showToast('Audio belum tersedia','Rekam atau buat berkas audio terlebih dahulu.',false);return;}const ext=b.type.includes('webm')?'webm':b.type.includes('mp4')?'m4a':b.type.includes('wav')?'wav':b.type.includes('mpeg')?'mp3':'audio';const f=new File([b],'elfas_audio.'+ext,{type:b.type});try{if(navigator.share&&navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({title:"ELFA'S Audio Generator Pro",files:[f]});else{downloadAudioFile();showToast('Bagikan','Berbagi berkas langsung tidak didukung; audio disiapkan untuk diunduh.');}}catch(e){if(e.name!=='AbortError')showToast('Gagal membagikan','Simpan file lalu bagikan melalui pengelola file.',false);}}
+function resetAllState(){if(!confirm('Reset pengaturan, naskah, dan sesi audio?'))return;try{if('speechSynthesis'in window)window.speechSynthesis.cancel();}catch(e){}if(appState.audioElement){appState.audioElement.pause();appState.audioElement.src='';}if(appState.recordingTimerInterval)clearInterval(appState.recordingTimerInterval);if(appState.mediaRecorder&&appState.mediaRecorder.state!=='inactive'){try{appState.mediaRecorder.stop();}catch(e){}}if(appState.mediaStream)appState.mediaStream.getTracks().forEach(t=>t.stop());if(appState.recordedAudioUrl)URL.revokeObjectURL(appState.recordedAudioUrl);if(appState.audioUrl)URL.revokeObjectURL(appState.audioUrl);location.reload();}
+</script>
+<script>
+// Integrasi TTS AI mendatang: endpoint server harus disediakan; jangan taruh API key rahasia di HTML.
+async function requestCloudTTS(text, endpoint='/api/tts'){if(!text||!text.trim())throw new Error('Teks TTS kosong.');const r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text,language:'id-ID',engine:appState.selectedEngine,gender:appState.gender,ageGroup:appState.ageGroup,styles:appState.selectedStyles,scenario:appState.selectedScenario})});if(!r.ok)throw new Error('Endpoint TTS belum tersedia (HTTP '+r.status+').');const b=await r.blob();if(!b.size||!b.type.startsWith('audio/'))throw new Error('Respons server bukan audio.');if(appState.audioUrl)URL.revokeObjectURL(appState.audioUrl);appState.audioBlob=b;appState.audioUrl=URL.createObjectURL(b);appState.audioElement=new Audio(appState.audioUrl);return b;}</script>
+</body>
+</html>
